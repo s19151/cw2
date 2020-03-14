@@ -29,15 +29,22 @@ namespace Cwiczenia2
                     case "json":
                         JsonSerialize(list, resPath);
                         break;
+                    default:
+                        CreateErrorLog("Nieobsługiwany format\n");
+                        break;
                 }
             }
             catch (ArgumentException)
             {
-                CreateErrorLog("Podana ścieżka jest niepoprawna");
+                CreateErrorLog("Podana ścieżka jest niepoprawna\n");
             }
             catch (FileNotFoundException e)
             {
-                CreateErrorLog("Plik " + e.FileName + " nie istnieje");
+                CreateErrorLog("Plik " + e.FileName + " nie istnieje\n");
+            }
+            catch (Exception e)
+            {
+                CreateErrorLog(e.Message + "\n");
             }
         }
         public static List<Student> ReadFile(String path)
@@ -51,7 +58,6 @@ namespace Cwiczenia2
                 String line = null;
                 while ((line = stream.ReadLine()) != null)
                 {
-                    Console.WriteLine(line);
                     String[] tmp = line.Split(",");
 
                     if (tmp.Length == 9)
@@ -59,13 +65,12 @@ namespace Cwiczenia2
                         int i = 0;
                         do
                         {
-                            if (tmp[i] == null)
-                                sb.Append("Pusta wartość w kolumnie" + tmp);
+                            if (String.IsNullOrEmpty(tmp[i]))
+                                sb.Append("Pusta wartość w kolumnie" + line + "\n");
                             else
                                 ++i;
-
                         }
-                        while (i < tmp.Length && tmp[i] != null);
+                        while (i < tmp.Length && !String.IsNullOrEmpty(tmp[i]));
 
                         if (i == tmp.Length)
                         {
@@ -73,11 +78,11 @@ namespace Cwiczenia2
                             if (!students.Contains(s))
                                 students.Add(s);
                             else
-                                sb.Append("duplikat: " + tmp);
+                                sb.Append("duplikat: " + line + "\n");
                         }
                     }
                     else
-                        sb.Append("Niepoprawna ilość danych: " + tmp);
+                        sb.Append("Niepoprawna ilość danych: " + line + "\n");
                 }
             }
 
@@ -103,7 +108,7 @@ namespace Cwiczenia2
 
         public static void CreateErrorLog(String errors)
         {
-            FileStream writer = new FileStream(@"łog.txt", FileMode.Create);
+            File.WriteAllText(@"łog.txt", errors);
         }
     }
 }

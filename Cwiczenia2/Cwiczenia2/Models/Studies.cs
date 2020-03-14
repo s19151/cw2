@@ -23,11 +23,18 @@ namespace Cwiczenia2.Models
 			set { _mode = value; }
 		}
 
+		public Studies() { }
+
 		public Studies(String name, String mode)
 		{
 			Name = name;
 			Mode = mode;
 		}
+
+		public override int GetHashCode() {
+			return Name.GetHashCode() + Mode.GetHashCode();
+		}
+
 		override public bool Equals(Object s)
 		{
 			if (s is Studies)

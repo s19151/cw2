@@ -8,9 +8,9 @@ namespace Cwiczenia2.Models
     public class Student
     {
         [XmlElement(ElementName = "fname")]
-        private String _fname;
+        private String _fName;
         [XmlElement(ElementName = "lname")]
-        private String _lname;
+        private String _lName;
         [XmlElement(ElementName = "studies")]
         private Studies _studies;
         [XmlAttribute(AttributeName = "indexNumber")]
@@ -26,13 +26,13 @@ namespace Cwiczenia2.Models
 
         public String FName
         {
-            get { return _fname; }
-            set { _fname = value; }
+            get { return _fName; }
+            set { _fName = value; }
         }
         public String LName
         {
-            get { return _fname; }
-            set { _fname = value; }
+            get { return _lName; }
+            set { _lName = value; }
         }
         public Studies Studies
         {
@@ -66,6 +66,8 @@ namespace Cwiczenia2.Models
             set { _fathersName = value; }
         }
 
+        public Student() { }
+
         public Student(String fName, String lName, Studies studies, String id, String birthDate, String email, String mothersName, String fathersName)
         {
             FName = fName;
@@ -94,6 +96,10 @@ namespace Cwiczenia2.Models
             }
 
             return false;
+        }
+
+        override public int GetHashCode() {
+            return FName.GetHashCode() + LName.GetHashCode() + Studies.GetHashCode() + Id.GetHashCode() + BirthDate.GetHashCode() + Email.GetHashCode() + MothersName.GetHashCode() + FathersName.GetHashCode();
         }
 
         public static bool operator ==(Student s1, Student s2) { return s1.Equals(s2); }
